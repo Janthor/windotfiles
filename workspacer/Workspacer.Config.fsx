@@ -1,27 +1,27 @@
-// Include plugins and use dependencies
-#r "C:\Program Files\workspacer\workspacer.Shared.dll"
-#r "C:\Program Files\workspacer\plugins\workspacer.Bar\workspacer.Bar.dll"
-#r "C:\Program Files\workspacer\plugins\workspacer.Gap\workspacer.Gap.dll"
-#r "C:\Program Files\workspacer\plugins\workspacer.ActionMenu\workspacer.ActionMenu.dll"
-#r "C:\Program Files\workspacer\plugins\workspacer.FocusIndicator\workspacer.FocusIndicator.dll"
-#r "C:\Program Files\workspacer\plugins\workspacer.FocusBorder\workspacer.FocusBorder.dll"
+﻿// Include plugins and use dependencies
+#r @"C:\Program Files\workspacer\workspacer.Shared.dll"
+#r @"C:\Program Files\workspacer\plugins\workspacer.Bar\workspacer.Bar.dll"
+#r @"C:\Program Files\workspacer\plugins\workspacer.Gap\workspacer.Gap.dll"
+#r @"C:\Program Files\workspacer\plugins\workspacer.ActionMenu\workspacer.ActionMenu.dll"
+#r @"C:\Program Files\workspacer\plugins\workspacer.FocusIndicator\workspacer.FocusIndicator.dll"
+#r @"C:\Program Files\workspacer\plugins\workspacer.FocusBorder\workspacer.FocusBorder.dll"
+#r @"C:\Program Files\workspacer\plugins\workspacer.TitleBar\workspacer.TitleBar.dll"
 
-using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using workspacer;
-using workspacer.Bar;
-using workspacer.Bar.Widgets;
-using workspacer.Gap;
-using workspacer.ActionMenu;
-using workspacer.FocusIndicator;
-using workspacer.FocusBorder;
+open System;
+open System.Diagnostics;
+open System.Collections.Generic;
+open System.Linq;
+open workspacer;
+open workspacer.Bar;
+open workspacer.Bar.Widgets;
+open workspacer.Gap;
+open workspacer.ActionMenu;
+open workspacer.FocusIndicator;
+open workspacer.FocusBorder;
+open workspacer.TitleBar;
 
 
-
-return new Action<IConfigContext>((IConfigContext context) =>
-{
+let setupContext (context : IConfigContext) =
     
     //* ******* *//
     //* THEMING *//
@@ -61,7 +61,12 @@ return new Action<IConfigContext>((IConfigContext context) =>
     //* GAPS *//
     //* **** *//
 
-    var gapPlugin = context.AddGap(new GapPluginConfig() { InnerGap = gap, OuterGap = gap / 2, Delta = gap / 2 });
+    //var gapPlugin = context.AddGap(new GapPluginConfig() { InnerGap = gap, OuterGap = gap / 2, Delta = gap / 2 });
+    //* ******** *//
+    //* TITLEBAR *//
+    //* ******** *//
+
+    var titleBarPlugin = context.AddTitleBar(new TitleBarPluginConfig() );
 
 
     //* *** *//
@@ -82,10 +87,7 @@ return new Action<IConfigContext>((IConfigContext context) =>
         LeftWidgets = () => new IBarWidget[]
         {
             new TextWidget(" "), 
-            new ActiveLayoutWidget()
-            {
-                UseAlias = true
-            }, 
+            new ActiveLayoutWidget(), 
             new TextWidget("|"), 
             new WorkspaceWidget()
             {
@@ -126,13 +128,13 @@ return new Action<IConfigContext>((IConfigContext context) =>
     //* FOCUS BORDER *//
     //* ************ *//
 
-    context.AddFocusBorder(new FocusBorderPluginConfig()
-    {
-        BorderColor = foreground3,
-        BorderSize = 5,
-        Opacity = 0.8
+    // context.AddFocusBorder(new FocusBorderPluginConfig()
+    // {
+    //     BorderColor = foreground3,
+    //     BorderSize = 5,
+    //     Opacity = 0.8
 
-    });
+    // });
 
 
     //* ******* *//
@@ -142,27 +144,26 @@ return new Action<IConfigContext>((IConfigContext context) =>
     //* Define Layout list
     Func<ILayoutEngine[]> defaultLayouts = () => new ILayoutEngine[]
     {
-        new DwindleLayoutEngine(){
-            Alias = "侀"
+        new DwindleLayoutEngine(1,0.65,0){
+            //DisplayedName = "侀"
         },
         // new TallLayoutEngine(){
-        //     Alias = "﬿"
+        //     DisplayedName = "﬿"
         // },
         // new VertLayoutEngine(),
         // {
-        //     Alias = "ﰧ"
+        //     DisplayedName = "ﰧ"
         // }
         // new HorzLayoutEngine(){
-        //     Alias = "ﰦ"
+        //     DisplayedName = "ﰦ"
         // },
         new FullLayoutEngine(){
-            Alias = ""
+            //DisplayedName = ""
         },
-        new FocusLayoutEngine(){
-            Alias = "頻"
+        new FocusLayoutEngine(1,0.5,0.03){
+            //DisplayedName = "頻"
         },
     };
-
     //*Assign layout list to config context
     context.DefaultLayouts = defaultLayouts;
 
@@ -176,9 +177,9 @@ return new Action<IConfigContext>((IConfigContext context) =>
     {
         ("爵 Web", defaultLayouts()),
         (" Chat", defaultLayouts()),
-        (" Launcher",defaultLayouts()),
         (" Games", defaultLayouts()),
         (" Coding", defaultLayouts()),
+        (" Etc",defaultLayouts()),
         ("懶 Media", defaultLayouts()),
     };
     
@@ -308,4 +309,4 @@ return new Action<IConfigContext>((IConfigContext context) =>
         manager.Subscribe(winShift, Keys.I, () => context.ToggleConsoleWindow(), "Toggle workspacer log console");
     };
     setKeybindings();
-});
+
