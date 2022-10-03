@@ -48,7 +48,7 @@ let setupContext (context : IConfigContext) =
     let barHeight         = 30
     let gapinner          = 10
     let gapouter          = 0
-    let gapdelta          = 0
+    let gapdelta          = 5
 
 
     //* ****** *//
