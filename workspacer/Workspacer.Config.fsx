@@ -1,140 +1,124 @@
-﻿// Include plugins and use dependencies
-#r @"C:\Program Files\workspacer\workspacer.Shared.dll"
-#r @"C:\Program Files\workspacer\plugins\workspacer.Bar\workspacer.Bar.dll"
-#r @"C:\Program Files\workspacer\plugins\workspacer.Gap\workspacer.Gap.dll"
-#r @"C:\Program Files\workspacer\plugins\workspacer.ActionMenu\workspacer.ActionMenu.dll"
-#r @"C:\Program Files\workspacer\plugins\workspacer.FocusIndicator\workspacer.FocusIndicator.dll"
-#r @"C:\Program Files\workspacer\plugins\workspacer.FocusBorder\workspacer.FocusBorder.dll"
-#r @"C:\Program Files\workspacer\plugins\workspacer.TitleBar\workspacer.TitleBar.dll"
+﻿//Dev
+#r @"A:\Development\General\Github\workspacer\src\workspacer\bin\Release\net5.0-windows\win10-x64\workspacer.Shared.dll"
+#r @"A:\Development\General\Github\workspacer\src\workspacer\bin\Release\net5.0-windows\win10-x64\plugins\workspacer.Bar\workspacer.Bar.dll"
+#r @"A:\Development\General\Github\workspacer\src\workspacer\bin\Release\net5.0-windows\win10-x64\plugins\workspacer.Gap\workspacer.Gap.dll"
+#r @"A:\Development\General\Github\workspacer\src\workspacer\bin\Release\net5.0-windows\win10-x64\plugins\workspacer.ActionMenu\workspacer.ActionMenu.dll"
+#r @"A:\Development\General\Github\workspacer\src\workspacer\bin\Release\net5.0-windows\win10-x64\plugins\workspacer.FocusIndicator\workspacer.FocusIndicator.dll"
+#r @"A:\Development\General\Github\workspacer\src\workspacer\bin\Release\net5.0-windows\win10-x64\plugins\workspacer.FocusBorder\workspacer.FocusBorder.dll"
 
-open System;
-open System.Diagnostics;
-open System.Collections.Generic;
-open System.Linq;
-open workspacer;
-open workspacer.Bar;
-open workspacer.Bar.Widgets;
-open workspacer.Gap;
-open workspacer.ActionMenu;
-open workspacer.FocusIndicator;
-open workspacer.FocusBorder;
-open workspacer.TitleBar;
+// Include plugins and use dependencies
+// #r @"C:\Program Files\workspacer\workspacer.Shared.dll"
+// #r @"C:\Program Files\workspacer\plugins\workspacer.Bar\workspacer.Bar.dll"
+// #r @"C:\Program Files\workspacer\plugins\workspacer.Gap\workspacer.Gap.dll"
+// #r @"C:\Program Files\workspacer\plugins\workspacer.ActionMenu\workspacer.ActionMenu.dll"
+// #r @"C:\Program Files\workspacer\plugins\workspacer.FocusIndicator\workspacer.FocusIndicator.dll"
+// #r @"C:\Program Files\workspacer\plugins\workspacer.FocusBorder\workspacer.FocusBorder.dll"
 
+open workspacer
+open workspacer.Bar
+open workspacer.Bar.Widgets
+open workspacer.Gap
+open workspacer.ActionMenu
+open workspacer.FocusBorder
 
-let setupContext (context : IConfigContext) =
-    
+let setupContext (context : IConfigContext) =    
     //* ******* *//
     //* THEMING *//
     //* ******* *//
 
-    var background      = new Color(39,  46,   62);
-    var urgent          = new Color(191, 97,  106);
-    var positive        = new Color(163, 190, 140);
-    var warning         = new Color(235, 203, 139);
-    var foreground      = new Color(129, 161, 193);
-    var foreground2     = new Color(180, 142, 173);
-    var foreground3     = new Color(136, 192, 208);
-    var foreground4     = new Color(229, 233, 240);
-    var alt_background  = new Color(86,  106, 116);
-    var alt_urgent      = new Color(191, 97,  106);
-    var alt_positive    = new Color(163, 190, 140);
-    var alt_warning     = new Color(235, 203, 139);
-    var alt_foreground  = new Color(129, 161, 193);
-    var alt_foreground2 = new Color(180, 142, 173);
-    var alt_foreground3 = new Color(143, 188, 187);
-    var alt_foreground4 = new Color(236, 239, 244);
-    var fontSize        = 12;
-    var fontName        = "mononoki NF";
-    var barHeight       = 18;
-    var gap             = 10;
-
+    let background      = Color(39,  46,   62)
+    let urgent          = Color(191, 97,  106)
+    let positive        = Color(163, 190, 140)
+    let warning         = Color(235, 203, 139)
+    let foreground      = Color(129, 161, 193)
+    let foreground2     = Color(180, 142, 173)
+    let foreground3     = Color(136, 192, 208)
+    let foreground4     = Color(229, 233, 240)
+    let alt_background  = Color(86,  106, 116)
+    let alt_urgent      = Color(191, 97,  106)
+    let alt_positive    = Color(163, 190, 140)
+    let alt_warning     = Color(235, 203, 139)
+    let alt_foreground  = Color(129, 161, 193)
+    let alt_foreground2 = Color(180, 142, 173)
+    let alt_foreground3 = Color(143, 188, 187)
+    let alt_foreground4 = Color(236, 239, 244)
+    let transparencykey = Color (12,12,12);
+    let fontSize          = 12
+    let fontName       = "mononoki NF"
+    let barHeight         = 30
+    let gapinner          = 10
+    let gapouter          = 0
+    let gapdelta          = 0
 
 
     //* ****** *//
     //* CONFIG *//
     //* ****** *//
-    context.CanMinimizeWindows = true;
-    context.ToggleConsoleWindow(); //disable console on startup
+    context.CanMinimizeWindows <- true
+    context.ToggleConsoleWindow() //disable console on startup
 
 
     //* **** *//
     //* GAPS *//
     //* **** *//
 
-    //var gapPlugin = context.AddGap(new GapPluginConfig() { InnerGap = gap, OuterGap = gap / 2, Delta = gap / 2 });
-    //* ******** *//
-    //* TITLEBAR *//
-    //* ******** *//
-
-    var titleBarPlugin = context.AddTitleBar(new TitleBarPluginConfig() );
-
+    let gapPlugin = context.AddGap(fun c ->
+        c.InnerGap <- gapinner
+        c.OuterGap <- gapouter
+        c.Delta <- gapdelta )
 
     //* *** *//
     //* BAR *//
     //* *** *//
 
-    context.AddBar(new BarPluginConfig()
-    {
-        //* Bar config
-        FontSize = fontSize,
-        BarHeight = barHeight,
-        FontName = fontName,
-        DefaultWidgetBackground = background,
-        DefaultWidgetForeground = foreground,
-        
+    let barPlugin = context.AddBar(fun c ->
+        c.FontSize                <- fontSize
+        c.BarHeight               <- barHeight
+        c.FontName                <- fontName
+        c.DefaultWidgetBackground <- background
+        c.DefaultWidgetForeground <- foreground
+        c.IsTransparent           <- true
+        c.TransparencyKey         <- transparencykey
+        c.Background              <- background
+        c.BarIsTop                <- false
+        c.BarReservesSpace        <- true
 
         //* Left Widgets
-        LeftWidgets = () => new IBarWidget[]
-        {
-            new TextWidget(" "), 
-            new ActiveLayoutWidget(), 
-            new TextWidget("|"), 
-            new WorkspaceWidget()
-            {
-                WorkspaceHasFocusColor = positive,
-                WorkspaceEmptyColor = alt_background,
-                WorkspaceIndicatingBackColor =  urgent,
-            },
-            new TextWidget("  "), 
-            new TitleWidget() 
-            {
-                MonitorHasFocusColor = foreground3,
-                IsShortTitle = true,
-                NoWindowMessage = ""
-            }
-        },
+        c.LeftWidgets <- fun () ->
+            [| ActiveLayoutWidget()
+               TextWidget("|")
+               WorkspaceWidget
+                 ( WorkspaceHasFocusColor = positive,
+                   WorkspaceEmptyColor = alt_background,
+                   WorkspaceIndicatingBackColor =  urgent )
+               TextWidget("  ")
+               TitleWidget
+                 ( MonitorHasFocusColor = foreground3,
+                   IsShortTitle = true,
+                   NoWindowMessage = "" )
+            |]
         
         //* Right Widgets
-        RightWidgets = () => new IBarWidget[]
-        {
-            new CpuPerformanceWidget() 
-            {
-                StringFormat = "" + "{0}%"  
-            },
-            new MemoryPerformanceWidget()
-            {
-                StringFormat = " " + "{0}%"  
-            },
-            new TextWidget(" "), 
-            new BatteryWidget(),
-            new TextWidget("  "),
-            new TimeWidget(1000, "HH:mm dd/MM/yyyy"),
-            new TextWidget(" "),
-        }
-    });
+        c.RightWidgets <- fun () ->
+            [| CpuPerformanceWidget(StringFormat = "" + "{0}%")
+               MemoryPerformanceWidget(StringFormat = " " + "{0}%")
+               TextWidget(" ")
+               BatteryWidget()
+               TextWidget("  ")
+               TimeWidget(1000, "HH:mm dd/MM/yyyy")
+            |]
+    )
 
 
     //* ************ *//
     //* FOCUS BORDER *//
     //* ************ *//
 
-    // context.AddFocusBorder(new FocusBorderPluginConfig()
-    // {
-    //     BorderColor = foreground3,
-    //     BorderSize = 5,
-    //     Opacity = 0.8
-
-    // });
+    let focusBorderPlugin = context.AddFocusBorder(fun c ->
+        c.BorderColor <- foreground3
+        c.BorderSize <- 5
+        c.Opacity <- 0.8
+    )
 
 
     //* ******* *//
@@ -142,30 +126,17 @@ let setupContext (context : IConfigContext) =
     //* ******* *//
 
     //* Define Layout list
-    Func<ILayoutEngine[]> defaultLayouts = () => new ILayoutEngine[]
-    {
-        new DwindleLayoutEngine(1,0.65,0){
-            //DisplayedName = "侀"
-        },
-        // new TallLayoutEngine(){
-        //     DisplayedName = "﬿"
-        // },
-        // new VertLayoutEngine(),
-        // {
-        //     DisplayedName = "ﰧ"
-        // }
-        // new HorzLayoutEngine(){
-        //     DisplayedName = "ﰦ"
-        // },
-        new FullLayoutEngine(){
-            //DisplayedName = ""
-        },
-        new FocusLayoutEngine(1,0.5,0.03){
-            //DisplayedName = "頻"
-        },
-    };
+    let defaultLayouts : unit -> ILayoutEngine array = fun () ->
+        [| DwindleLayoutEngine(1,0.65,0.03, Name = "侀")
+           FullLayoutEngine (Name = "")
+           FocusLayoutEngine(Name = "頻")
+        // TallLayoutEngine (Name = "﬿")
+        // VertLayoutEngine (Name = "ﰧ")
+        // HorzLayoutEngine (Name = "ﰦ")
+        |]
+
     //*Assign layout list to config context
-    context.DefaultLayouts = defaultLayouts;
+    context.DefaultLayouts <- defaultLayouts
 
 
     //* ********** *//
@@ -173,140 +144,130 @@ let setupContext (context : IConfigContext) =
     //* ********** *//
     
     //* Define list of workspace names and layouts
-    (string, ILayoutEngine[])[] workspaces =
-    {
-        ("爵 Web", defaultLayouts()),
-        (" Chat", defaultLayouts()),
-        (" Games", defaultLayouts()),
-        (" Coding", defaultLayouts()),
-        (" Etc",defaultLayouts()),
-        ("懶 Media", defaultLayouts()),
-    };
+    let workspaces =
+        [| "爵 Web", defaultLayouts ()
+           " Chat", defaultLayouts ()
+           " Games", defaultLayouts()
+           " Coding", defaultLayouts()
+           " Etc",defaultLayouts()
+           "懶 Media", defaultLayouts()
+        |]
     
-    //* Creates one workspace for each of the layouts defined above
-    foreach ((string name, ILayoutEngine[] layouts) in workspaces)
-    {
-        context.WorkspaceContainer.CreateWorkspace(name, layouts);
-    }
-
+    for name, layouts in workspaces do
+        context.WorkspaceContainer.CreateWorkspace(name, layouts)
 
     //* ******* *//
     //* FILTERS *//
     //* ******* *//
 
     //* By executable name
-    context.WindowRouter.AddFilter((window) => !window.ProcessFileName.Equals("1Password.exe"));
-    context.WindowRouter.AddFilter((window) => !window.ProcessFileName.Equals("pinentry.exe"));
-    context.WindowRouter.AddFilter((window) => !window.ProcessFileName.Equals("AltSnap.exe"));
-    context.WindowRouter.AddFilter((window) => !window.ProcessFileName.Equals("PowerToys.PowerLauncher.exe"));
+    context.WindowRouter.AddFilter(fun window -> window.ProcessFileName <> "1Password.exe")
+    context.WindowRouter.AddFilter(fun window -> window.ProcessFileName <> "pinentry.exe")
+    context.WindowRouter.AddFilter(fun window -> window.ProcessFileName <> "AltSnap.exe")
+    context.WindowRouter.AddFilter(fun window -> window.ProcessFileName <> "PowerToys.PowerLauncher.exe")
 
     //* By window class
-    context.WindowRouter.AddFilter((window) => !window.Class.Equals("ShellTrayWnd"));
-    context.WindowRouter.AddFilter((window) => !window.Class.Equals("OperationStatusWindow")); //Explorer File copy
-    context.WindowRouter.AddFilter((window) => !window.Class.Equals("#32770")); //File Selector
+    context.WindowRouter.AddFilter(fun window -> window.Class <> "ShellTrayWnd")
+    context.WindowRouter.AddFilter(fun window -> window.Class <> "OperationStatusWindow") //Explorer File copy
+    context.WindowRouter.AddFilter(fun window -> window.Class <> "#32770") //File Selector
 
     //* By window title
-    context.WindowRouter.AddFilter((window) => !window.Title.Equals("Color Picker"));
+    context.WindowRouter.AddFilter(fun window -> window.Title <> "Color Picker")
 
 
     //* *********** *//
     //* ACTION MENU *//
     //* *********** *//
-    var actionMenu = context.AddActionMenu(new ActionMenuPluginConfig()
-    {
-        RegisterKeybind = false,
-        MenuHeight = barHeight,
-        FontSize = fontSize,
-        FontName = fontName,
-        Background = background,
-    });
+    let actionMenu = context.AddActionMenu(fun c ->
+        c.RegisterKeybind <- false
+        c.MenuHeight <- barHeight
+        c.FontSize <- fontSize
+        c.FontName <- fontName
+        c.Background <- background
+    )
 
     //* Action menu builder
-    Func<ActionMenuItemBuilder> createActionMenuBuilder = () =>
-    {
-        var menuBuilder = actionMenu.Create();
-
-        //* Workspacer functions
-        menuBuilder.Add("View keybinds", () => context.Keybinds.ShowKeybindDialog());
-        menuBuilder.Add("Enable/Disable Workspacer", () => context.Enabled = !context.Enabled);
-        menuBuilder.Add("Restart Workspacer", () => context.Restart());
-        menuBuilder.Add("Quit Workspacer", () => context.Quit());
-
-        return menuBuilder;
-    };
-    var actionMenuBuilder = createActionMenuBuilder();
+    let createActionMenuBuilder () =
+        actionMenu.Create()
+            .Add("View keybinds", fun () -> context.Keybinds.ShowKeybindDialog())
+            .Add("Enable/Disable Workspacer", fun () -> context.Enabled <- not context.Enabled)
+            .Add("Restart Workspacer", fun () -> context.Restart())
+            .Add("Quit Workspacer", fun () -> context.Quit())
+    let actionMenuBuilder = createActionMenuBuilder ()
 
 
     //* *********** *//
     //* KEYBINDINGS *//
     //* *********** *//
 
-    Action setKeybindings = () =>
-    {
+    let setKeybindings () =
         //* Keybinding setup
         // Declare modifiers and combos
-        KeyModifiers winShift = KeyModifiers.Win | KeyModifiers.Shift;
-        KeyModifiers winCtrl = KeyModifiers.Win | KeyModifiers.Control;
-        KeyModifiers win = KeyModifiers.Win;
+        let winShift = KeyModifiers.Win ||| KeyModifiers.Shift
+        let winCtrl = KeyModifiers.Win ||| KeyModifiers.Control
+        let win = KeyModifiers.Win
         // Initialize Keybind manager
-        IKeybindManager manager = context.Keybinds;
+        let manager = context.Keybinds
         // declare variables
-        var workspaces = context.Workspaces;
+        let workspaces = context.Workspaces
 
         // Disables all previous keybindings
-        manager.UnsubscribeAll();
+        manager.UnsubscribeAll()
 
         //* Mouse bindings
         // Left click focuses monitor
-        manager.Subscribe(MouseEvent.LButtonDown, () => workspaces.SwitchFocusedMonitorToMouseLocation());
+        manager.Subscribe(MouseEvent.LButtonDown, fun () -> workspaces.SwitchFocusedMonitorToMouseLocation())
 
+        // Helper to convert int to key
+        let key i : Keys = LanguagePrimitives.EnumOfValue i
+        
         //* Workspace bindings
         // Automatic keybindings for workspaces 1-9
-        foreach (IWorkspace workspace in context.WorkspaceContainer.GetWorkspaces(context.MonitorContainer.FocusedMonitor))
-        {
+        for workspace in context.WorkspaceContainer.GetWorkspaces(context.MonitorContainer.FocusedMonitor) do
             // Gets workspace index (first workspace is index 0)
-            int i = context.WorkspaceContainer.GetWorkspaceIndex(workspace);
+            let i = context.WorkspaceContainer.GetWorkspaceIndex(workspace)
             // Winkey + numbers 1-9 switches to corresponding workspace (considering index+1)
-            manager.Subscribe(win, (Keys)(49 + i), () => workspaces.SwitchToWorkspace(workspace), "Switch to Workspace " + (i+1));
+            manager.Subscribe(win, key (49 + i), (fun () -> workspaces.SwitchToWorkspace(workspace)), $"Switch to Workspace {i + 1}")
             // Winkey +Shift + numbers 1-9 moves focused window to corresponding workspace (considering index+1)
-            manager.Subscribe(winShift, (Keys)(49 + i), () => workspaces.MoveFocusedWindowToWorkspace(i), "Switch to Workspace " + (i+1));
-        }
+            manager.Subscribe(winShift, key (49 + i), (fun () -> workspaces.MoveFocusedWindowToWorkspace(i)), $"Switch to Workspace {i+1}")
+
         // Winkey + Left/Right focuses previous/next workspace
-        manager.Subscribe(win, Keys.Left, () => workspaces.SwitchToPreviousWorkspace(), "Switch to previous workspace");
-        manager.Subscribe(win, Keys.Right, () => workspaces.SwitchToNextWorkspace(), "Switch to next workspace");
+        manager.Subscribe(win, Keys.Left, (fun () -> workspaces.SwitchToPreviousWorkspace()), "Switch to previous workspace")
+        manager.Subscribe(win, Keys.Right, (fun () -> workspaces.SwitchToNextWorkspace()), "Switch to next workspace")
         // Winkey + Shift + Left/Right moves window to previous/next monitor
-        manager.Subscribe(winShift, Keys.Left, () => workspaces.MoveFocusedWindowToPreviousMonitor(), "move focused window to previous monitor");
-        manager.Subscribe(winShift, Keys.Right, () => workspaces.MoveFocusedWindowToNextMonitor(), "move focused window to next monitor");
+        manager.Subscribe(winShift, Keys.Left, (fun () -> workspaces.MoveFocusedWindowToPreviousMonitor()), "move focused window to previous monitor")
+        manager.Subscribe(winShift, Keys.Right, (fun () -> workspaces.MoveFocusedWindowToNextMonitor()), "move focused window to next monitor")
         
         //* Layout management bindings
         // Winkey + Shift + H/L keys (vim keys), Shrinks/Expands primary area for current layout
-        manager.Subscribe(winShift, Keys.H, () => workspaces.FocusedWorkspace.ShrinkPrimaryArea(), "Shrink primary area");
-        manager.Subscribe(winShift, Keys.L, () => workspaces.FocusedWorkspace.ExpandPrimaryArea(), "Expand primary area");
+        manager.Subscribe(winShift, Keys.H, (fun () -> workspaces.FocusedWorkspace.ShrinkPrimaryArea()), "Shrink primary area")
+        manager.Subscribe(winShift, Keys.L, (fun () -> workspaces.FocusedWorkspace.ExpandPrimaryArea()), "Expand primary area")
         // Winkey + Ctrl + H/L keys (vim keys), Decreases/Increases primary window count for current layout
-        manager.Subscribe(winCtrl, Keys.H, () => workspaces.FocusedWorkspace.DecrementNumberOfPrimaryWindows(), "Subtract primary windows");
-        manager.Subscribe(winCtrl, Keys.L, () => workspaces.FocusedWorkspace.IncrementNumberOfPrimaryWindows(), "Add primary windows");
+        manager.Subscribe(winCtrl, Keys.H, (fun () -> workspaces.FocusedWorkspace.DecrementNumberOfPrimaryWindows()), "Subtract primary windows")
+        manager.Subscribe(winCtrl, Keys.L, (fun () -> workspaces.FocusedWorkspace.IncrementNumberOfPrimaryWindows()), "Add primary windows")
         // Winkey + Shift + K/J keys (vim keys), Moves window to next/previous position
-        manager.Subscribe(winShift, Keys.K, () => workspaces.FocusedWorkspace.SwapFocusAndNextWindow(), "Move window to next position");
-        manager.Subscribe(winShift, Keys.J, () => workspaces.FocusedWorkspace.SwapFocusAndPreviousWindow(), "Move window to previous position");
+        manager.Subscribe(winShift, Keys.K, (fun () -> workspaces.FocusedWorkspace.SwapFocusAndNextWindow()), "Move window to next position")
+        manager.Subscribe(winShift, Keys.J, (fun () -> workspaces.FocusedWorkspace.SwapFocusAndPreviousWindow()), "Move window to previous position")
         // Winkey + K/J keys (vim keys), Focuses next/previous window
-        manager.Subscribe(win, Keys.K, () => workspaces.FocusedWorkspace.FocusNextWindow(), "Focus next window");
-        manager.Subscribe(win, Keys.J, () => workspaces.FocusedWorkspace.FocusPreviousWindow(), "Focus previous window");
+        manager.Subscribe(win, Keys.K, (fun () -> workspaces.FocusedWorkspace.FocusNextWindow()), "Focus next window")
+        manager.Subscribe(win, Keys.J, (fun () -> workspaces.FocusedWorkspace.FocusPreviousWindow()), "Focus previous window")
         // Winkey + Ctrl + Add(+)/Subtract(-) Resize inner gap
-        manager.Subscribe(winCtrl, Keys.Add, () => gapPlugin.IncrementInnerGap(), "Increase inner gap");
-        manager.Subscribe(winCtrl, Keys.Subtract, () => gapPlugin.DecrementInnerGap(), "Decrease inner gap");
+        manager.Subscribe(winCtrl, Keys.Add, (fun () -> gapPlugin.IncrementInnerGap()), "Increase inner gap")
+        manager.Subscribe(winCtrl, Keys.Subtract, (fun () -> gapPlugin.DecrementInnerGap()), "Decrease inner gap")
         // Winkey + Shift + Add(+)/Subtract(-) Resize outer gap
-        manager.Subscribe(winShift, Keys.Add, () => gapPlugin.IncrementOuterGap(), "Increase outer gap");
-        manager.Subscribe(winShift, Keys.Subtract, () => gapPlugin.DecrementOuterGap(), "Decrease outer gap");
+        manager.Subscribe(winShift, Keys.Add, (fun () -> gapPlugin.IncrementOuterGap()), "Increase outer gap")
+        manager.Subscribe(winShift, Keys.Subtract, (fun () -> gapPlugin.DecrementOuterGap()), "Decrease outer gap")
 
         //* Other shortcuts
         // Winkey + Ctrl + P Brings up action menu
-        manager.Subscribe(winCtrl, Keys.P, () => actionMenu.ShowMenu(actionMenuBuilder), "Show workspacer menu");
+        manager.Subscribe(winCtrl, Keys.P, (fun () -> actionMenu.ShowMenu(actionMenuBuilder)), "Show workspacer menu")
         // Winkey + Ctrl + R Restarts workspacer
-        manager.Subscribe(winCtrl, Keys.R, () => context.Restart(), "Restart workspacer");
+        manager.Subscribe(winCtrl, Keys.R, (fun () -> context.Restart()), "Restart workspacer")
         // Winkey + Shift + Escape Turns workspacer off/on
-        manager.Subscribe(winShift, Keys.Escape, () => context.Enabled = !context.Enabled, "Toggle workspacer on/off");
+        manager.Subscribe(winShift, Keys.Escape, (fun () -> context.Enabled <- not context.Enabled), "Toggle workspacer on/off")
         // Winkey + Shift + I Toggle workspacer log console
-        manager.Subscribe(winShift, Keys.I, () => context.ToggleConsoleWindow(), "Toggle workspacer log console");
-    };
-    setKeybindings();
-
+        manager.Subscribe(winShift, Keys.I, (fun () -> context.ToggleConsoleWindow()), "Toggle workspacer log console")
+    
+    setKeybindings()
+    
+    ()
