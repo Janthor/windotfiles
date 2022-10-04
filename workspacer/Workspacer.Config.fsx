@@ -14,12 +14,18 @@
 // #r @"C:\Program Files\workspacer\plugins\workspacer.FocusIndicator\workspacer.FocusIndicator.dll"
 // #r @"C:\Program Files\workspacer\plugins\workspacer.FocusBorder\workspacer.FocusBorder.dll"
 
+//External DLLs
+//#r @"C:\Users\gabri\.config\workspacer\AutoHotkey.dll"
+
 open workspacer
 open workspacer.Bar
 open workspacer.Bar.Widgets
 open workspacer.Gap
 open workspacer.ActionMenu
 open workspacer.FocusBorder
+
+//open AutoHotkey.Interop
+
 
 let setupContext (context : IConfigContext) =    
     //* ******* *//
@@ -82,6 +88,7 @@ let setupContext (context : IConfigContext) =
         c.Background              <- background
         c.BarIsTop                <- false
         c.BarReservesSpace        <- true
+        c.BarMargin               <- 5
 
         //* Left Widgets
         c.LeftWidgets <- fun () ->
@@ -205,7 +212,7 @@ let setupContext (context : IConfigContext) =
         // Declare modifiers and combos
         let winShift = KeyModifiers.Win ||| KeyModifiers.Shift
         let winCtrl = KeyModifiers.Win ||| KeyModifiers.Control
-        let win = KeyModifiers.Win
+        let win = KeyModifiers.Win ||| KeyModifiers.Control ||| KeyModifiers.Alt //crazy unusable modkey shortcut, is actually triggered through autohotkey script to prevent windows from messing with my hotkeys
         // Initialize Keybind manager
         let manager = context.Keybinds
         // declare variables
